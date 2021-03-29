@@ -6,9 +6,11 @@ const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const dotEnv = require('dotenv-webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const BundleAnalyzer = require('webpack-bundle-analyzer');
 
 module.exports = {
     mode: 'development',
+    devtool: 'source-map',
     watch: true,
     entry: './src/index.js',
     context: path.resolve(__dirname),
@@ -61,7 +63,6 @@ module.exports = {
             '@images': path.resolve(__dirname, './src/assets/images')
         }
     },
-    devtool: 'source-map',
     plugins: [
         new htmlWebpackPlugin({
             inject: true,
@@ -80,6 +81,13 @@ module.exports = {
             ]
         }),
         new dotEnv(),
-        new CleanWebpackPlugin()
-    ]
+        new CleanWebpackPlugin(),
+        new BundleAnalyzer()
+    ],
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        historyApiFallback: true,
+        port: 3000
+    }
 };
